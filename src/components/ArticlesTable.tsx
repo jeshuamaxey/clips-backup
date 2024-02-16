@@ -1,9 +1,19 @@
 "use client";
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import useArticles from "@/hooks/useArticles";
 import { createClient } from "@/utils/supabase/client";
 import { useState } from "react";
 import { Button } from "./ui/button";
+import Link from "next/link";
+import Hyperlink from "./Hyperlink";
 
 const ArticlesTable = () => {
   const LOADING = "__LOADING__"
@@ -36,36 +46,40 @@ const ArticlesTable = () => {
   const articles = articlesQuery.data!;
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Author</th>
-          <th>Publish date</th>
-          <th>Backup</th>
-        </tr>
-      </thead>
-      <tbody>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Title</TableHead>
+          <TableHead>Author</TableHead>
+          <TableHead>Publish date</TableHead>
+          <TableHead>Backup</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
         {articles.map((article) => (
-          <tr key={article.id}>
-            <td>{article.title_raw}</td>
-            <td>{article.author_raw}</td>
-            <td>{new Date(article.published_at).toDateString()}</td>
-            <td>{article.backed_up_at ? (
+          <TableRow key={article.id}>
+            <TableCell>{article.title_raw}</TableCell>
+            <TableCell>{article.author_raw}</TableCell>
+            <TableCell>{new Date(article.published_at).toDateString()}</TableCell>
+            <TableCell>{article.backed_up_at ? (
               signedUrls[article.backup_pdf_path!] ? (
-                <a href={signedUrls[article.backup_pdf_path!]} download>
+                <Hyperlink href={signedUrls[article.backup_pdf_path!]!} target="_blank" download>
                   Download
-                </a>
+                </Hyperlink>
               ) : (
-                <Button onClick={() => getBackupUrl(article.backup_pdf_path!)} disabled={signedUrls[article.backup_pdf_path!] === LOADING}>
+                <Button
+                  size="sm"
+                  onClick={() => getBackupUrl(article.backup_pdf_path!)}
+                  disabled={signedUrls[article.backup_pdf_path!] === LOADING}
+                  >
                   {signedUrls[article.backup_pdf_path!] === LOADING ? "Loading..." : "Generate link"}
                 </Button>
               )
-            ) : "Not backed up"}</td>
-          </tr>
+            ) : "Not backed up"}</TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
   );
 }
 
