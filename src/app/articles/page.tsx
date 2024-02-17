@@ -1,6 +1,7 @@
 import ArticlesPageHeader from "@/components/ArticlesPageHeader";
 import ArticlesTable from "@/components/ArticlesTable";
 import Header from "@/components/Header";
+import { SELECT_ARTICLES } from "@/hooks/useArticles";
 import Hydrate from "@/providers/Hydrate";
 import getQueryClient from "@/utils/getQueryClient";
 import { createClient } from "@/utils/supabase/server";
@@ -11,7 +12,7 @@ const ArticlesPage = async () => {
 
   const queryClient = getQueryClient()
   await queryClient.prefetchQuery({ queryKey: ["articles"], queryFn: async() => {
-    const {data, error} = await supabase.from("articles").select("*").order("published_at", {ascending: false})
+    const {data, error} = await supabase.from("articles").select(SELECT_ARTICLES).order("published_at", {ascending: false})
     return data
   }})
   const dehydratedState = dehydrate(queryClient)

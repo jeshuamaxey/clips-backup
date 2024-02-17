@@ -44,6 +44,8 @@ const ArticlesTable = () => {
 
   const articles = articlesQuery.data!;
 
+  console.log({articles})
+
   return (
     <Table className="w-full">
         {articles.length > 0 && (
@@ -51,6 +53,7 @@ const ArticlesTable = () => {
           <TableRow>
             <TableHead>Title</TableHead>
             <TableHead>Author</TableHead>
+            <TableHead>Outlet</TableHead>
             <TableHead>Publish date</TableHead>
             <TableHead>Backup</TableHead>
           </TableRow>
@@ -59,7 +62,7 @@ const ArticlesTable = () => {
       <TableBody>
         {articles.length === 0 && (
           <TableRow>
-            <TableCell colSpan={4} className="text-center">
+            <TableCell colSpan={5} className="text-center">
               <h2 className="text-2xl pb-4">
                 No articles (yet!)
               </h2>
@@ -73,6 +76,7 @@ const ArticlesTable = () => {
           <TableRow key={article.id}>
             <TableCell>{article.title_raw}</TableCell>
             <TableCell>{article.author_raw}</TableCell>
+            <TableCell>{article.outlets!.name}</TableCell>
             <TableCell>{new Date(article.published_at).toDateString()}</TableCell>
             <TableCell>{article.backed_up_at ? (
               signedUrls[article.backup_pdf_path!] ? (

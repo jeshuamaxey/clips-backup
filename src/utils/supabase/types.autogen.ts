@@ -18,6 +18,7 @@ export type Database = {
           created_at: string
           created_by: string | null
           id: number
+          outlet_id: number
           published_at: string
           title_raw: string
           updated_at: string
@@ -31,6 +32,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           id?: number
+          outlet_id: number
           published_at: string
           title_raw: string
           updated_at?: string
@@ -44,6 +46,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           id?: number
+          outlet_id?: number
           published_at?: string
           title_raw?: string
           updated_at?: string
@@ -55,6 +58,13 @@ export type Database = {
             columns: ["created_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_articles_outlet_id_fkey"
+            columns: ["outlet_id"]
+            isOneToOne: false
+            referencedRelation: "outlets"
             referencedColumns: ["id"]
           }
         ]
@@ -94,25 +104,25 @@ export type Database = {
       }
       outlets: {
         Row: {
-          auth_page_paths: Json | null
+          author_page_paths: string[] | null
           created_at: string
-          hosts: Json | null
+          hosts: string[] | null
           id: number
           name: string | null
           updated_at: string | null
         }
         Insert: {
-          auth_page_paths?: Json | null
+          author_page_paths?: string[] | null
           created_at?: string
-          hosts?: Json | null
+          hosts?: string[] | null
           id?: number
           name?: string | null
           updated_at?: string | null
         }
         Update: {
-          auth_page_paths?: Json | null
+          author_page_paths?: string[] | null
           created_at?: string
-          hosts?: Json | null
+          hosts?: string[] | null
           id?: number
           name?: string | null
           updated_at?: string | null

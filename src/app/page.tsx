@@ -3,13 +3,14 @@ import { createClient } from "@/utils/supabase/server";
 import { dehydrate } from "@tanstack/react-query";
 import Hydrate from "@/providers/Hydrate";
 import Header from "@/components/Header";
+import { SELECT_ARTICLES } from "@/hooks/useArticles";
 
 export default async function Index() {
   const supabase = createClient();
 
   const queryClient = getQueryClient()
   await queryClient.prefetchQuery({ queryKey: ["articles"], queryFn: async() => {
-    const {data, error} = await supabase.from("articles").select("*")
+    const {data, error} = await supabase.from("articles").select(SELECT_ARTICLES).order("published_at", {ascending: false})
     return data
   }})
   const dehydratedState = dehydrate(queryClient)
