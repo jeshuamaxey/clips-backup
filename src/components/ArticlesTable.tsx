@@ -12,7 +12,6 @@ import useArticles from "@/hooks/useArticles";
 import { createClient } from "@/utils/supabase/client";
 import { useState } from "react";
 import { Button } from "./ui/button";
-import Link from "next/link";
 import Hyperlink from "./Hyperlink";
 
 const ArticlesTable = () => {
@@ -46,16 +45,30 @@ const ArticlesTable = () => {
   const articles = articlesQuery.data!;
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Title</TableHead>
-          <TableHead>Author</TableHead>
-          <TableHead>Publish date</TableHead>
-          <TableHead>Backup</TableHead>
-        </TableRow>
-      </TableHeader>
+    <Table className="w-full">
+        {articles.length > 0 && (
+        <TableHeader>
+          <TableRow>
+            <TableHead>Title</TableHead>
+            <TableHead>Author</TableHead>
+            <TableHead>Publish date</TableHead>
+            <TableHead>Backup</TableHead>
+          </TableRow>
+        </TableHeader>
+        )}
       <TableBody>
+        {articles.length === 0 && (
+          <TableRow>
+            <TableCell colSpan={4} className="text-center">
+              <h2 className="text-2xl pb-4">
+                No articles (yet!)
+              </h2>
+              <p>
+                Install the chrome extension to start recording articles
+              </p>
+            </TableCell>
+          </TableRow>
+        )}
         {articles.map((article) => (
           <TableRow key={article.id}>
             <TableCell>{article.title_raw}</TableCell>

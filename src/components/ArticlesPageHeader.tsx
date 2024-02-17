@@ -19,6 +19,10 @@ const ArticlesPageHeader = () => {
 
   const articles = articlesQuery.data!
 
+  if(articles.length === 0) { 
+    return null
+  }
+
   return <div className="flex flex-row gap-4">
     <Card className="w-1/3">
       <CardHeader>
