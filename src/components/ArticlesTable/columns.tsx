@@ -27,7 +27,7 @@ export const columns: ColumnDef<ArticlesSB>[] = [
   },
   {
     accessorKey: "published_at",
-    header: "Outlet",
+    header: "Published",
     cell: ({ row }) => (
       <div className="">{new Date(row.getValue("published_at")).toDateString()}</div>
     ),
