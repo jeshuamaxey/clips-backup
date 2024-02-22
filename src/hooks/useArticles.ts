@@ -12,7 +12,6 @@ const useArticles = () => {
     queryKey: ["articles"],
     queryFn: async () => {
       const { data, error } = await supabase.from("articles").select(SELECT_ARTICLES).order('published_at', { ascending: false })
-      console.log(data, error)
       return data
     },
   })
