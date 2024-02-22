@@ -1,6 +1,7 @@
 import ArticlesPageHeader from "@/components/ArticlesPageHeader";
 import ArticlesTable from "@/components/ArticlesTable";
 import Header from "@/components/Header";
+import Heatmap from "@/components/Heatmap";
 import { SELECT_ARTICLES } from "@/hooks/useArticles";
 import Hydrate from "@/providers/Hydrate";
 import getQueryClient from "@/utils/getQueryClient";
@@ -23,6 +24,7 @@ const ArticlesPage = async () => {
         <Header />
         <div className="w-full max-w-4xl flex flex-col gap-4">
           <ArticlesPageHeader />
+          <Heatmap />
           <ArticlesTable />
         </div>
       </div>
