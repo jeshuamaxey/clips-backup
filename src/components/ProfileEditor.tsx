@@ -1,5 +1,6 @@
 "use client"
 
+import { useToast } from "@/components/ui/use-toast"
 import { createClient } from "@/utils/supabase/client";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -17,6 +18,7 @@ const ProfileEditor = () => {
   const supabase = createClient();
   const profileQuery = useMyProfile();
   const profileMutation = useUpdateProfile();
+  const {toast} = useToast()
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -46,8 +48,23 @@ const ProfileEditor = () => {
   }
 
   const updateTempProfile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e)
     setTempProfile({...tempProfile, [e.target.id]: e.target.value})
+  }
+
+  const saveProfile = async() => {
+    await profileMutation.mutate(tempProfile)
+
+    if(profileMutation.isError) {
+      toast({
+        title: "Error saving profile",
+        variant: "destructive"
+      })
+    } else {
+      toast({
+        title: "Profile saved",
+        variant: "default"
+      })
+    }
   }
 
   return <div className="flex flex-col gap-4">
@@ -66,8 +83,8 @@ const ProfileEditor = () => {
 
     <div className="flex">
       <Button
-        onClick={() => profileMutation.mutate(tempProfile)}
-        disabled={JSON.stringify(tempProfile) === JSON.stringify(profile)}
+        onClick={saveProfile}
+        disabled={profileMutation.isPending || JSON.stringify(tempProfile) === JSON.stringify(profile)}
         >
           {profileMutation.isPending ? "Saving..." : "Save changes"}
       </Button>

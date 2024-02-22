@@ -2,6 +2,7 @@ import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import Query from "@/providers/queryClient";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Toaster } from "@/components/ui/toaster";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -27,6 +28,7 @@ export default function RootLayout({
             {children}
             <ReactQueryDevtools buttonPosition="bottom-left" initialIsOpen={false} />
           </Query>
+          <Toaster />
         </main>
       </body>
     </html>
