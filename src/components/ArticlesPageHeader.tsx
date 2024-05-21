@@ -4,12 +4,11 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import useArticles from "@/hooks/useArticles";
-import { formatDistance } from "date-fns";
+import { formatDistance, isToday } from "date-fns";
 
 const ArticlesPageHeader = () => {
   const articlesQuery = useArticles()
@@ -23,35 +22,52 @@ const ArticlesPageHeader = () => {
     return null
   }
 
-  return <div className="flex flex-row gap-4">
-    <Card className="w-1/3">
-      <CardHeader>
-        <CardTitle>
-          <span>{articles.length}</span>
-        </CardTitle>
-        <CardDescription>
-          Articles recorded
-        </CardDescription>
-      </CardHeader>
-    </Card>
+  let publishedStr = ""
 
-    <Card className="w-1/3">
-      <CardHeader>
-        <CardTitle><span>{articles.filter(a => a.backed_up_at).length}</span></CardTitle>
-        <CardDescription>Articles backed up</CardDescription>
-      </CardHeader>
-      <CardContent>
-      </CardContent>
-    </Card>
+  const lastRecordedToday = isToday(new Date(articles[0].published_at))
 
-    <Card className="w-1/3">
-      <CardHeader>
-        <CardTitle><span>{formatDistance(new Date(articles[0].published_at), new Date(), {addSuffix: true})}</span></CardTitle>
-        <CardDescription>Most recently recorded article</CardDescription>
-      </CardHeader>
-      <CardContent>
-      </CardContent>
-    </Card>
+  if(lastRecordedToday) {
+    publishedStr = "Today"
+  }
+  else {
+    publishedStr = formatDistance(new Date(articles[0].published_at), new Date(), {addSuffix: true, })
+  }
+
+  return <div className="flex flex-col gap-4">
+    <div className="flex flex-row gap-4 justify-end">
+      <p className="text-sm opacity-40">Data last updated {formatDistance(new Date(articles[0].created_at), new Date(), {addSuffix: true})}</p>
+    </div>
+
+    <div className="flex flex-row gap-4">
+      <Card className="w-1/3">
+        <CardHeader>
+          <CardTitle>
+            <span>{articles.length}</span>
+          </CardTitle>
+          <CardDescription>
+            Articles recorded
+          </CardDescription>
+        </CardHeader>
+      </Card>
+
+      <Card className="w-1/3">
+        <CardHeader>
+          <CardTitle><span>{articles.filter(a => a.backed_up_at).length}</span></CardTitle>
+          <CardDescription>Articles backed up</CardDescription>
+        </CardHeader>
+        <CardContent>
+        </CardContent>
+      </Card>
+
+      <Card className="w-1/3">
+        <CardHeader>
+          <CardTitle><span>{publishedStr}</span></CardTitle>
+          <CardDescription>Most recently published article</CardDescription>
+        </CardHeader>
+        <CardContent>
+        </CardContent>
+      </Card>
+    </div>
   </div>
 }
 
