@@ -1,14 +1,32 @@
 import { ArticlesSB } from "@/utils/supabase/types";
 import { ColumnDef } from "@tanstack/react-table";
 import FileDownloadButton from "../FileDownloadButton";
+import Hyperlink from "../Hyperlink";
 
 export const columns: ColumnDef<ArticlesSB>[] = [
   {
-    accessorKey: "title_raw",
+    accessorKey: "title",
+    accessorFn: (row) => {
+      return {
+        title_raw: row.title_raw,
+        url_raw: row.url_raw
+      }
+    },
     header: "Title",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("title_raw")}</div>
-    ),
+    cell: ({ row }) => {
+      const title: {
+        url_raw: string,
+        title_raw: string
+      } = row.getValue("title")
+
+      return (
+        <div className="capitalize">
+          <Hyperlink href={title.url_raw || ""}>
+            {title.title_raw}
+          </Hyperlink>
+        </div>
+      )
+    },
   },
   {
     accessorKey: "author_raw",
