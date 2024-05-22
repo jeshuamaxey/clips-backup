@@ -34,10 +34,6 @@ const ArticlesPageHeader = () => {
   }
 
   return <div className="flex flex-col gap-4">
-    <div className="flex flex-row gap-4 justify-end">
-      <p className="text-sm opacity-40">Data last updated {formatDistance(new Date(articles[0].created_at), new Date(), {addSuffix: true})}</p>
-    </div>
-
     <div className="flex flex-row gap-4">
       <Card className="w-1/3">
         <CardHeader>

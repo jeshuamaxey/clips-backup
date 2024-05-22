@@ -7,6 +7,9 @@ import Hydrate from "@/providers/Hydrate";
 import getQueryClient from "@/utils/getQueryClient";
 import { createClient } from "@/utils/supabase/server";
 import { dehydrate } from "@tanstack/react-query";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import LastUpdatedIndicator from "@/components/LastUpdatedIndicator";
+import PivotTable from "@/components/PivotTable";
 
 const ArticlesPage = async () => {
   const supabase = createClient();
@@ -22,10 +25,35 @@ const ArticlesPage = async () => {
     <Hydrate state={dehydratedState}>
       <div className="flex-1 w-full flex flex-col items-center">
         <Header />
-        <div className="w-full max-w-4xl flex flex-col gap-4">
-          <ArticlesPageHeader />
-          <Heatmap />
-          <ArticlesTable />
+
+        <div className="w-full max-w-4xl">
+        <Tabs defaultValue="dashboard" className="">
+          <div className="flex flex-row justify-between items-center">
+            <TabsList>
+              <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+              <TabsTrigger value="publishingRecord">Publishing record</TabsTrigger>
+              <TabsTrigger value="dataTable">Articles list</TabsTrigger>
+            </TabsList>
+            <LastUpdatedIndicator />
+          </div>
+
+          <TabsContent value="dashboard">
+            <div className="flex flex-col gap-4">
+              <ArticlesPageHeader />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="publishingRecord">
+            <div className="flex flex-col gap-8 pt-8">
+              <Heatmap />
+              <PivotTable />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="dataTable">
+            <ArticlesTable />
+          </TabsContent>
+        </Tabs>
         </div>
       </div>
     </Hydrate>

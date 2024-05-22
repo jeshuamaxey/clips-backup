@@ -66,60 +66,63 @@ const Heatmap = () => {
 
   return (
     <div className="flex flex-col gap-2">
-    <div className="h-40">
-      <ResponsiveCalendar
-          data={heatmapDataArray}
-          from={`01-01-${year}`}
-          to={`12-31-${year}`}
-          emptyColor="#eeeeee"
-          colors={colors}
-          margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-          yearSpacing={40}
-          monthBorderColor="#ffffff"
-          dayBorderWidth={2}
-          dayBorderColor="#ffffff"
-          tooltip={n=> <span className="text-xs py-1 px-2 bg-foreground text-background rounded">
-            {`${n.value} article${Number(n.value) === 1 ? "" : "s"} on ${new Date(n.day).toDateString()}`}
-          </span>
-          }
-          legends={[
-            {
-              anchor: "bottom-right",
-              direction: "row",
-              translateY: 36,
-              itemCount: 4,
-              itemWidth: 42,
-              itemHeight: 36,
-              itemsSpacing: 14,
-              itemDirection: "right-to-left"
-            }
-          ]}
-          />
-    </div>
-
-    <div className="flex justify-between">
-      <Select 
-        value={String(year)}
-        onValueChange={(value) => setYear(Number(value))}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Year" />
-          </SelectTrigger>
-          <SelectContent>
-          {yearOptions.map((yr) => 
-            <SelectItem key={yr} value={String(yr)}>{yr}</SelectItem>
-          )}
-          </SelectContent>
-      </Select>
-
-      <div className="flex gap-1 justify-center items-center">
-        <span className="text-xs">Less</span>
-        {colors.map((color, i) => <span key={i} className="text-xs" style={{color}}>
-          <Square size={16} fill={color} />
-        </span>)}
-        <span className="text-xs">More</span>
+      <div className="flex justify-between">
+        <div className="flex gap-1 justify-center items-center">
+          <span className="text-xs">Less</span>
+          {colors.map((color, i) => <span key={i} className="text-xs" style={{color}}>
+            <Square size={16} fill={color} />
+          </span>)}
+          <span className="text-xs">More</span>
+        </div>
+        
+        <div className="flex flex-row items-center">
+          <h3 className="pr-2">Display heatmap for</h3>
+          <Select 
+            value={String(year)}
+            onValueChange={(value) => setYear(Number(value))}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Year" />
+              </SelectTrigger>
+              <SelectContent>
+              {yearOptions.map((yr) => 
+                <SelectItem key={yr} value={String(yr)}>{yr}</SelectItem>
+              )}
+              </SelectContent>
+          </Select>
+        </div>
       </div>
-    </div>
+
+      <div className="h-40">
+        <ResponsiveCalendar
+            data={heatmapDataArray}
+            from={`01-01-${year}`}
+            to={`12-31-${year}`}
+            emptyColor="#eeeeee"
+            colors={colors}
+            margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+            yearSpacing={40}
+            monthBorderColor="#ffffff"
+            dayBorderWidth={2}
+            dayBorderColor="#ffffff"
+            tooltip={n=> <span className="text-xs py-1 px-2 bg-foreground text-background rounded">
+              {`${n.value} article${Number(n.value) === 1 ? "" : "s"} on ${new Date(n.day).toDateString()}`}
+            </span>
+            }
+            legends={[
+              {
+                anchor: "bottom-right",
+                direction: "row",
+                translateY: 36,
+                itemCount: 4,
+                itemWidth: 42,
+                itemHeight: 36,
+                itemsSpacing: 14,
+                itemDirection: "right-to-left"
+              }
+            ]}
+            />
+      </div>
     </div>
 
   )
