@@ -33,37 +33,40 @@ const ArticlesPageHeader = () => {
     publishedStr = formatDistance(new Date(articles[0].published_at), new Date(), {addSuffix: true, })
   }
 
-  return <div className="flex flex-col gap-4">
-    <div className="flex flex-row gap-4">
-      <Card className="w-1/3">
-        <CardHeader>
-          <CardTitle>
-            <span>{articles.length}</span>
-          </CardTitle>
-          <CardDescription>
-            Articles recorded
-          </CardDescription>
-        </CardHeader>
-      </Card>
+  const nWriters = new Set(articles.map(a => a.author_raw)).size
 
-      <Card className="w-1/3">
-        <CardHeader>
-          <CardTitle><span>{articles.filter(a => a.backed_up_at).length}</span></CardTitle>
-          <CardDescription>Articles backed up</CardDescription>
-        </CardHeader>
-        <CardContent>
-        </CardContent>
-      </Card>
+  return <div className="grid grid-cols-3 gap-4">
+    <Card className="text-center py-4 flex flex-col justify-end">
+      <CardHeader>
+        <CardTitle>
+          <span className="text-6xl">{articles.length}</span>
+        </CardTitle>
+        <CardDescription>
+          Articles recorded
+        </CardDescription>
+      </CardHeader>
+    </Card>
 
-      <Card className="w-1/3">
-        <CardHeader>
-          <CardTitle><span>{publishedStr}</span></CardTitle>
-          <CardDescription>Most recently published article</CardDescription>
-        </CardHeader>
-        <CardContent>
-        </CardContent>
-      </Card>
-    </div>
+    <Card className="text-center py-4 flex flex-col justify-end">
+      <CardHeader>
+        <CardTitle><span className="text-6xl">{articles.filter(a => a.backed_up_at).length}</span></CardTitle>
+        <CardDescription>Articles backed up</CardDescription>
+      </CardHeader>
+    </Card>
+
+    <Card className="text-center py-4 flex flex-col justify-end">
+      <CardHeader>
+        <CardTitle><span className="text-3xl">{publishedStr}</span></CardTitle>
+        <CardDescription>Most recently published article</CardDescription>
+      </CardHeader>
+    </Card>
+
+    <Card className="text-center py-4 flex flex-col justify-end">
+      <CardHeader>
+        <CardTitle><span className="text-6xl">{nWriters}</span></CardTitle>
+        <CardDescription>Writers in dataset</CardDescription>
+      </CardHeader>
+    </Card>
   </div>
 }
 
