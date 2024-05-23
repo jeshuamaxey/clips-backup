@@ -10,7 +10,7 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Clips backup",
+  title: "My Story Safe",
   description: "A tool for journalists to securely backup published work and showcase it to editors.",
 };
 

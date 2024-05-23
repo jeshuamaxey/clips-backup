@@ -4,6 +4,8 @@ import { dehydrate } from "@tanstack/react-query";
 import Hydrate from "@/providers/Hydrate";
 import Header from "@/components/Header";
 import { SELECT_ARTICLES } from "@/hooks/useArticles";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function Index() {
   const supabase = createClient();
@@ -35,6 +37,9 @@ export default async function Index() {
                   showcase it to editors.
                 </span>
             </h2>
+            <Button className="w-1/2" asChild>
+              <Link href="/signup">Get started</Link>
+            </Button>
           </main>
         </div>
       </div>

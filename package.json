@@ -7,6 +7,7 @@
     "gen-types": "npx supabase gen types typescript --project-id=rjvyvrfdntrcodrcnhap > src/utils/supabase/types.autogen.ts"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.4.2",
     "@nivo/calendar": "^0.84.0",
     "@nivo/core": "^0.84.0",
     "@radix-ui/react-checkbox": "^1.0.4",
@@ -32,10 +33,12 @@
     "postcss": "8.4.33",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.51.5",
     "tailwind-merge": "^2.2.1",
     "tailwindcss": "3.4.1",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "20.11.5",

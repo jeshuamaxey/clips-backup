@@ -23,6 +23,7 @@ const ProfileEditor = () => {
   useEffect(() => {
     const fetchUser = async () => {
       const { data: {user}, error } = await supabase.auth.getUser();
+      console.log(user, error)
       if (error) {
         console.error(error);
         setLoadingUser(false);
@@ -48,7 +49,9 @@ const ProfileEditor = () => {
   }
 
   const updateTempProfile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTempProfile({...tempProfile, [e.target.id]: e.target.value})
+    const key = e.target.id;
+    const value = key === "author_pages" ? [e.target.value] : e.target.value;
+    setTempProfile({...tempProfile, [key]: value})
   }
 
   const saveProfile = async() => {
@@ -70,15 +73,22 @@ const ProfileEditor = () => {
   return <div className="flex flex-col gap-4">
     <div className="flex flex-col gap-2">
       <Label htmlFor="email">Email</Label>
-      <Input id="email" type="email" value={user!.email} />
+      <Input id="email" type="email" defaultValue={user!.email} />
     </div>
+
     <div className="flex flex-col gap-2">
       <Label htmlFor="first_name">First name</Label>
-      <Input id="first_name" type="string" onChange={updateTempProfile} value={tempProfile.first_name || ""} />
+      <Input id="first_name" type="string" onChange={updateTempProfile} defaultValue={user?.user_metadata.first_name || ""} />
     </div>
+
     <div className="flex flex-col gap-2">
       <Label htmlFor="last_name">Last name</Label>
-      <Input id="last_name" type="string" onChange={updateTempProfile} value={tempProfile.last_name || ""} />
+      <Input id="last_name" type="string" onChange={updateTempProfile} defaultValue={user?.user_metadata.last_name || ""} />
+    </div>
+
+    <div className="flex flex-col gap-2">
+      <Label htmlFor="author_pages">Author page</Label>
+      <Input id="author_pages" type="string" onChange={updateTempProfile} defaultValue={user?.user_metadata.author_pages ? user?.user_metadata.author_pages[0] : ""} />
     </div>
 
     <div className="flex">
