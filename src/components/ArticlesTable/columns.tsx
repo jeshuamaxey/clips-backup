@@ -3,8 +3,43 @@ import { ColumnDef } from "@tanstack/react-table";
 import FileDownloadButton from "../FileDownloadButton";
 import Hyperlink from "../Hyperlink";
 import WaybackMachineLink from "../WaybackMachineLink";
+import { CheckSquare, Square, X } from "lucide-react";
+import { Button } from "../ui/button";
+import { Session } from "@supabase/supabase-js";
+import { Badge } from "../ui/badge";
 
-export const columns: ColumnDef<ArticlesSB>[] = [
+const getBackupFileName = (title: string) => {
+  return title.replace(/[^a-z0-9]/gi, '-').toLowerCase() + '.pdf';
+};
+
+const getBackupFilePath = (session: Session, title: string) => {
+  const userId = session.user?.id;
+  return `${userId}/${getBackupFileName(title)}`;
+}
+
+const backupArticle = (articleId: string, articalUrlRaw: string, articleTitleRaw: string) => {
+  const BACKUP_ARTICLE_HASH = '#__CB_BACKUP_ARTICLE'
+  const QUERY_PARAMS = {
+    FILENAME: 'filename',
+    ARTICLE_ID: 'article_id',
+  }
+
+  const url = new URL(articalUrlRaw);
+  const filename = getBackupFileName(articleTitleRaw);
+
+  console.log({
+    raw: articleTitleRaw,
+    filename,
+  });
+
+  url.searchParams.append(QUERY_PARAMS.FILENAME, filename);
+  url.searchParams.append(QUERY_PARAMS.ARTICLE_ID, String(articleId));
+  url.hash = BACKUP_ARTICLE_HASH;
+
+  window.open(url.href, '_blank');
+};
+
+export const getColumns = (session: Session): ColumnDef<ArticlesSB>[] => [
   {
     accessorKey: "title",
     accessorFn: (row) => {
@@ -50,6 +85,54 @@ export const columns: ColumnDef<ArticlesSB>[] = [
     cell: ({ row }) => (
       <div className="">{new Date(row.getValue("published_at")).toDateString()}</div>
     ),
+  },
+  {
+    accessorKey: "backed_up_at",
+    header: "Status",
+    cell: ({ row }) => (
+      <Badge className={row.getValue("backed_up_at") ? "bg-green-500 hover:bg-green-500" : "bg-yellow-500 hover:bg-yellow-500"}>{row.getValue("backed_up_at") ? <CheckSquare size={16} /> : <X size={16} />}</Badge>
+    ),
+  },
+  {
+    accessorKey: "backed_up",
+    accessorFn: (row) => {
+      return {
+        id: row.id,
+        url_raw: row.url_raw,
+        title_raw: row.title_raw,
+        backed_up_at: row.backed_up_at
+      }
+    },
+    header: "Back up",
+    cell: ({ row }) => {
+      const {
+        backed_up_at,
+        id: articleId,
+        url_raw: articleUrlRaw,
+        title_raw: articleTitleRaw
+      }: {
+        id: number,
+        url_raw: string,
+        title_raw: string,
+        backed_up_at: string
+      } = row.getValue("backed_up");
+
+      if(backed_up_at) {
+        return <div className="min-w-[140px]">
+          <FileDownloadButton
+            fileBucket="article_backups"
+            filePath={getBackupFilePath(session, articleTitleRaw)}
+            />
+
+        </div>
+      } else {
+        return <div className="min-w-[140px]">
+            <Button size="sm" variant="outline" onClick={() => backupArticle(String(articleId), articleUrlRaw, articleTitleRaw)}>
+              Backup now
+            </Button>
+          </div>
+        }
+      },
   },
   {
     accessorKey: "url_raw",

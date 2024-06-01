@@ -2,6 +2,7 @@ import { useState } from "react"
 import Hyperlink from "./Hyperlink"
 import { Button } from "./ui/button"
 import { set } from "date-fns"
+import { Loader2Icon } from "lucide-react"
 
 const WaybackMachineLink = ({ url }: { url: string }) => {
   const [loading, setLoading] = useState(false)
@@ -15,9 +16,11 @@ const WaybackMachineLink = ({ url }: { url: string }) => {
 
   if(waybackup) {
     return (
-      <Hyperlink target="_blank" href={waybackup.url}>
+      <Button size="sm" variant="outline" asChild>
+        <Hyperlink target="_blank" href={waybackup.url}>
         View on wayback
       </Hyperlink>
+      </Button>
     )
   } else if(searchedFor) {
     return (
@@ -25,7 +28,7 @@ const WaybackMachineLink = ({ url }: { url: string }) => {
     )
   } else {
     return (
-      <Button variant="outline"
+      <Button size="sm" variant="outline"
         onClick={async () => {
           setLoading(true)
           const response = await fetch(`https://archive.org/wayback/available?url=${url}`)
@@ -36,7 +39,9 @@ const WaybackMachineLink = ({ url }: { url: string }) => {
           setLoading(false)
           setSearchedFor(true)
       }}>
-        {loading ? "Searching..." : "Search"}
+        {loading ? <>
+          <Loader2Icon size={16} className="mr-1 animate-spin"/>
+        </> : "Search"}
       </Button>
     )
   }

@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Button } from "./ui/button"
 import { createClient } from "@/utils/supabase/client"
 import Hyperlink from "./Hyperlink"
+import { Download, Link, Loader2Icon } from "lucide-react"
 
 type FileDownloadButtonProps = {
   fileBucket: string
@@ -10,7 +11,8 @@ type FileDownloadButtonProps = {
 
 const FileDownloadButton = ({
   fileBucket,
-  filePath
+  filePath,
+  ...props
 }: FileDownloadButtonProps) => {
   const supabase = createClient();
   const [generatingUrl, setGeneratingUrl] = useState<boolean>(false)
@@ -32,15 +34,26 @@ const FileDownloadButton = ({
 }
 
   if(signedUrl) {
-    return <Hyperlink href={signedUrl} target="_blank" download>Download</Hyperlink>
+    return <Button size="sm" variant="outline" asChild>
+      <Hyperlink href={signedUrl} target="_blank" download>
+        <Download size={16} className="mr-1"/>
+        Download
+      </Hyperlink>
+    </Button>
   }
 
   if(generatingUrl) {
-    return <Button disabled>Generating...</Button>
+    return <Button size="sm" variant="outline" disabled>
+      <Loader2Icon size={16} className="mr-1 animate-spin"/>
+      Generating...
+    </Button>
   }
 
   return (
-    <Button onClick={generateUrl}>Generate download link</Button>
+    <Button size="sm" variant="outline" onClick={generateUrl}>
+      <Link size={16} className="mr-1"/>
+      Generate download link
+    </Button>
   )
 }
 

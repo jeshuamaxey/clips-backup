@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import Hyperlink from "@/components/Hyperlink";
 
 export default function Login({
   searchParams,
@@ -77,6 +78,13 @@ export default function Login({
         <Button className="mb-2">
           Sign In
         </Button>
+        <p>
+          Don't have an account?{" "}
+          <Hyperlink href="/signup" className="text-blue-500">
+            Sign up here
+          </Hyperlink>
+          .
+        </p>
         {searchParams?.message && (
           <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
             {searchParams.message}
