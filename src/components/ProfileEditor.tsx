@@ -4,20 +4,18 @@ import { useToast } from "@/components/ui/use-toast"
 import { createClient } from "@/utils/supabase/client";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import useMyProfile from "@/hooks/useMyProfile";
 import { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
-import { Profile } from "@/utils/supabase/types";
+import { UserMetadata } from "@/utils/supabase/types";
 import { Button } from "./ui/button";
-import useUpdateProfile from "@/hooks/useUpdateProfile";
+import useUpdateUserMetadata from "@/hooks/useUpdateUserMetadata";
 
 const ProfileEditor = () => {
   const [loadingUser, setLoadingUser] = useState(true)
   const [user, setUser] = useState<User | null>(null)
-  const [tempProfile, setTempProfile] = useState<Profile | null>(null)
+  const [tempProfile, setTempProfile] = useState<UserMetadata | null>(null)
   const supabase = createClient();
-  const profileQuery = useMyProfile();
-  const profileMutation = useUpdateProfile();
+  const userMetadataMutation = useUpdateUserMetadata();
   const {toast} = useToast()
 
   useEffect(() => {
@@ -31,20 +29,15 @@ const ProfileEditor = () => {
       }
       setLoadingUser(false);
       setUser(user);
+      setTempProfile(user?.user_metadata || {} as UserMetadata);
     }
     fetchUser();
   }, [])
 
 
   if(!loadingUser && !user) return <div>No user found</div>
-  if(profileQuery.isLoading || loadingUser) return <div>Loading...</div>
-  if(profileQuery.isError) return <div>Error fetching profile</div>
-  if(!profileQuery.data) return <div>No profile found</div>
-  
-  const profile = profileQuery.data;
   
   if(!tempProfile) {
-    setTempProfile(profile);
     return <div>Loading...</div>
   }
 
@@ -55,9 +48,9 @@ const ProfileEditor = () => {
   }
 
   const saveProfile = async() => {
-    await profileMutation.mutate(tempProfile)
+    await userMetadataMutation.mutate(tempProfile)
 
-    if(profileMutation.isError) {
+    if(userMetadataMutation.isError) {
       toast({
         title: "Error saving profile",
         variant: "destructive"
@@ -94,9 +87,9 @@ const ProfileEditor = () => {
     <div className="flex">
       <Button
         onClick={saveProfile}
-        disabled={profileMutation.isPending || JSON.stringify(tempProfile) === JSON.stringify(profile)}
+        disabled={userMetadataMutation.isPending || JSON.stringify(tempProfile) === JSON.stringify(user?.user_metadata)}
         >
-          {profileMutation.isPending ? "Saving..." : "Save changes"}
+          {userMetadataMutation.isPending ? "Saving..." : "Save changes"}
       </Button>
     </div>
 

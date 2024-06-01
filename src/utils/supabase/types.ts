@@ -8,6 +8,12 @@ export type ArticleInsert = Database['public']['Tables']['articles']['Insert'];
 export type Profile = Database['public']['Tables']['profiles']['Row'];
 export type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
 
+export type UserMetadata = {
+  first_name?: string;
+  last_name?: string;
+  author_pages?: string[];
+}
+
 const supabase = createClient()
 const getArticles = async () => await supabase.from("articles").select(SELECT_ARTICLES).single()
 

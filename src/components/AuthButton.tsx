@@ -14,19 +14,9 @@ import { User, LogOut } from "lucide-react";
 export default async function AuthButton() {
   const supabase = createClient();
 
-  let profile;
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  if(user) {
-    const {data, error} = await supabase.from("profiles").select("*").eq("id", user?.id).single();
-    if (error) {
-      console.error(error);
-    } else {
-      profile = data;
-    }
-  }
 
   const signOut = async () => {
     "use server";
@@ -36,7 +26,7 @@ export default async function AuthButton() {
     return redirect("/login");
   };
 
-  const username = profile?.first_name || user?.email;
+  const username = user?.user_metadata.first_name || user?.email;
 
   return user ? (
     <DropdownMenu>

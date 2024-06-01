@@ -61,6 +61,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "articles_created_by_fkey1"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "public_articles_outlet_id_fkey"
             columns: ["outlet_id"]
             isOneToOne: false
@@ -102,6 +109,33 @@ export type Database = {
           },
         ]
       }
+      outlet_requests: {
+        Row: {
+          author_page: string | null
+          created_at: string
+          email: string | null
+          first_name: string | null
+          id: number
+          last_name: string | null
+        }
+        Insert: {
+          author_page?: string | null
+          created_at?: string
+          email?: string | null
+          first_name?: string | null
+          id?: number
+          last_name?: string | null
+        }
+        Update: {
+          author_page?: string | null
+          created_at?: string
+          email?: string | null
+          first_name?: string | null
+          id?: number
+          last_name?: string | null
+        }
+        Relationships: []
+      }
       outlets: {
         Row: {
           author_page_paths: string[] | null
@@ -109,6 +143,7 @@ export type Database = {
           hosts: string[] | null
           id: number
           name: string | null
+          support: Database["public"]["Enums"]["support_status"]
           updated_at: string | null
         }
         Insert: {
@@ -117,6 +152,7 @@ export type Database = {
           hosts?: string[] | null
           id?: number
           name?: string | null
+          support?: Database["public"]["Enums"]["support_status"]
           updated_at?: string | null
         }
         Update: {
@@ -125,6 +161,7 @@ export type Database = {
           hosts?: string[] | null
           id?: number
           name?: string | null
+          support?: Database["public"]["Enums"]["support_status"]
           updated_at?: string | null
         }
         Relationships: []
@@ -135,18 +172,21 @@ export type Database = {
           created_at: string
           first_name: string | null
           id: string
+          last_name: string | null
         }
         Insert: {
           author_pages?: string[] | null
           created_at?: string
           first_name?: string | null
           id: string
+          last_name?: string | null
         }
         Update: {
           author_pages?: string[] | null
           created_at?: string
           first_name?: string | null
           id?: string
+          last_name?: string | null
         }
         Relationships: [
           {
@@ -166,7 +206,11 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      support_status:
+        | "not_supported"
+        | "planned"
+        | "supported_beta"
+        | "supported_ga"
     }
     CompositeTypes: {
       [_ in never]: never
