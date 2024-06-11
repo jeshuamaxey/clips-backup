@@ -71,7 +71,7 @@ const SignupForm = () => {
   return (
     <Form {...form}>
       <form
-        className="animate-in flex-1 flex flex-col w-full justify-center gap-8 text-foreground"
+        className="animate-in py-9 flex-1 flex flex-col w-full justify-center gap-8 text-foreground"
         onSubmit={form.handleSubmit(signUp)}
         >
         <div className="pb-8">

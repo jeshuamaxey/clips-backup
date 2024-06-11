@@ -11,6 +11,7 @@ import Link from "next/link";
 
 const OnboardingUX = () => {
   const  [loading, setLoading] = useState(false)
+  const [pollUserInterval, setPollUserInterval] = useState<NodeJS.Timeout | null>(null)
   const [step, setStep] = useState(0);
   const [user, setUser] = useState<User | null>(null);
   const [resetAuthorPage, setResetAuthorPage] = useState(false);
@@ -28,11 +29,15 @@ const OnboardingUX = () => {
       }
 
       setUser(userRecord);
-      setStep(1);
     }
-
+    
+    setStep(1);
 
     getUser()
+
+    const i = setInterval(getUser, 1000)
+    setPollUserInterval(i)
+    return () => clearInterval(i)
   }, []);
 
   const nextStep = () => {
@@ -210,6 +215,17 @@ const OnboardingUX = () => {
         )}
 
       </AnimatePresence>
+
+      <Button onClick={() => supabase.auth.updateUser({data: {
+        onboarding_checklist :{
+          storedArticleFromAuthorPage: false,
+          signedInFromExtension: false
+        }
+        }})}>
+            reset
+      </Button>
+
+      <p>implement `storageKey` so that log out from extension does break the website (untested theory)</p>
     </div>
   );
 }

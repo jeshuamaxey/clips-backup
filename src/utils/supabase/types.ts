@@ -12,6 +12,10 @@ export type UserMetadata = {
   first_name?: string;
   last_name?: string;
   author_pages?: string[];
+  onboarding_checklist? :{
+    storedArticleFromAuthorPage: boolean
+    signedInFromExtension: boolean
+  }
 }
 
 const supabase = createClient()
