@@ -61,10 +61,16 @@ export default async function Index() {
                 <div className="flex gap-4">
                   <div className="flex flex-col gap-4">
                     <h3 className="font-bold text-xl text-foreground/100">1. Log your work</h3>
-                    <Image alt="screenshot of the tool in action" src="/images/wayback.png" width={1127} height={545} />
+                    <Image alt="screenshot of the tool in action" src="/images/logging.png" width={1127} height={545} />
                     <p className="text-foreground/60">
                       Save links to your published work to your story safe using our browser extension.
                     </p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex flex-col gap-4">
+                    <h3 className="font-bold text-xl text-foreground/100">2. Track your publishing stats</h3>
+                    <Image alt="screenshot of the tool in action" src="/images/dashboard.png" width={1127} height={545} />
                     <p className="text-foreground/60">
                       Automatically track your publishing record on your personal dashboard.
                     </p>
@@ -72,22 +78,25 @@ export default async function Index() {
                 </div>
                 <div className="flex gap-4">
                   <div className="flex flex-col gap-4">
-                    <h3 className="font-bold text-xl text-foreground/100">2. Selectively backup entire articles</h3>
-                    <Image alt="screenshot of the tool in action" src="/images/logging.png" width={1127} height={545} />
+                    <h3 className="font-bold text-xl text-foreground/100">3. Selectively backup entire articles</h3>
+                    <Image alt="screenshot of the tool in action" src="/images/wayback.png" width={1127} height={545} />
                     <p className="text-foreground/60">
                       Easily find a wayback machine link to any of your logged stories, even if they've been taken down byy the original outlet.
                     </p>
+                    <p className="text-foreground/60">
+                      A PDF backup feature is coming soon!
+                    </p>
                   </div>
                 </div>
-                <div className="flex gap-4">
+                {/* <div className="flex gap-4">
                   <div className="flex flex-col gap-4">
-                    <h3 className="font-bold text-xl text-foreground/100">3. One-click create PDFs</h3>
+                    <h3 className="font-bold text-xl text-foreground/100">4. One-click create PDFs</h3>
                     <Image alt="screenshot of the tool in action" src="/images/logging.png" width={1127} height={545} />
                     <p className="text-foreground/60">
                       Our PDF backup feature (still in beta) allows you to backup a copy of the article to your story safe or download it locally.
                     </p>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </WidthRestrictor>
@@ -113,7 +122,7 @@ export default async function Index() {
             </WidthRestrictor>
           </div>
 
-          <div>
+          <footer>
             <WidthRestrictor className="mx-auto py-20">
               <div className="flex-1 flex flex-col items-center gap-4 px-4">
                 <h2 className="font-bold text-4xl py-4 text-foreground leading-relaxed">
@@ -125,12 +134,12 @@ export default async function Index() {
                     Sign up for a free account and start logging your work today.
                   </p>
                   <Button className="w-1/2 mx-auto" asChild>
-                    <Link href="/signup">Get started</Link>
+                    <Link href="/signup">Get started for free!</Link>
                   </Button>
                 </div>
               </div>
             </WidthRestrictor>
-          </div>
+          </footer>
 
 
         </div>
