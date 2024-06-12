@@ -34,13 +34,12 @@ export default async function Index() {
           <div className="bg-foreground">
             <WidthRestrictor className="mx-auto py-20">
               <div className="flex-1 flex flex-col gap-4 px-4">
-                <h2 className="font-bold text-4xl py-4 text-background/60 leading-relaxed">
-                  A tool for journalists to<br/>
+                <h2 className="font-bold text-4xl py-4 text-background/60 leading-relaxed w-4/5">
+                  A tool for journalists to&nbsp;
                     <span className="text-background">
                     securely backup published work
                     </span>
-                    <br/>
-                    and&nbsp;
+                    &nbsp;and&nbsp;
                     <span className="text-background">
                       showcase it to editors.
                     </span>
