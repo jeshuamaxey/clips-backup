@@ -19,6 +19,6 @@ export type UserMetadata = {
 }
 
 const supabase = createClient()
-const getArticles = async () => await supabase.from("articles").select(SELECT_ARTICLES).single()
+const getArticle = async () => await supabase.from("articles").select(SELECT_ARTICLES).single()
 
-export type ArticlesSB = NonNullable<Awaited<ReturnType<typeof getArticles>>["data"]>
+export type ArticleSB = NonNullable<Awaited<ReturnType<typeof getArticle>>["data"]>

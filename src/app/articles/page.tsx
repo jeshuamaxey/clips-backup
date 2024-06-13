@@ -10,6 +10,7 @@ import { dehydrate } from "@tanstack/react-query";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import LastUpdatedIndicator from "@/components/LastUpdatedIndicator";
 import PivotTable from "@/components/PivotTable";
+import UpdateDataButton from "@/components/UpdateDataButton";
 
 const ArticlesPage = async () => {
   const supabase = createClient();
@@ -34,7 +35,10 @@ const ArticlesPage = async () => {
               <TabsTrigger value="publishingRecord">Publishing record</TabsTrigger>
               <TabsTrigger value="dataTable">Articles list</TabsTrigger>
             </TabsList>
-            <LastUpdatedIndicator />
+            <div className="flex gap-2 items-center">
+              <LastUpdatedIndicator />
+              <UpdateDataButton />
+            </div>
           </div>
 
           <TabsContent value="dashboard">

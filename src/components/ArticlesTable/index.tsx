@@ -6,7 +6,7 @@ import { getColumns } from "./columns";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Session } from "@supabase/supabase-js";
-import { ArticlesSB } from "@/utils/supabase/types";
+import { ArticleSB } from "@/utils/supabase/types";
 import { ColumnDef } from "@tanstack/react-table";
 
 
@@ -14,7 +14,7 @@ import { ColumnDef } from "@tanstack/react-table";
 const ArticlesTable = () => {
   const supabase = createClient();
   const [session, setSession] = useState<Session | null>(null)
-  const [columns, setColumns] = useState<ColumnDef<ArticlesSB>[]>([])
+  const [columns, setColumns] = useState<ColumnDef<ArticleSB>[]>([])
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {

@@ -1,4 +1,4 @@
-import { ArticlesSB } from "@/utils/supabase/types";
+import { ArticleSB } from "@/utils/supabase/types";
 import { ColumnDef } from "@tanstack/react-table";
 import FileDownloadButton from "../FileDownloadButton";
 import Hyperlink from "../Hyperlink";
@@ -39,7 +39,7 @@ const backupArticle = (articleId: string, articalUrlRaw: string, articleTitleRaw
   window.open(url.href, '_blank');
 };
 
-export const getColumns = (session: Session): ColumnDef<ArticlesSB>[] => [
+export const getColumns = (session: Session): ColumnDef<ArticleSB>[] => [
   {
     accessorKey: "title",
     accessorFn: (row) => {
