@@ -1,0 +1,7 @@
+{
+  "crons": [{
+    "path": "/api/cron/scrape-articles",
+    "annotation": "every hour on the hour",
+    "schedule": "0 * * * *"
+  }]
+}
