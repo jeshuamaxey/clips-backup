@@ -7,5 +7,10 @@
 
     "annotation": "every minute",
     "schedule": "* * * * *"
+  }, {
+    "path": "/api/cron/emails/weekly-roundup",
+
+    "annotation": "8am every monday",
+    "schedule": "0 8 * * 1"
   }]
 }
