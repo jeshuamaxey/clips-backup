@@ -55,11 +55,11 @@ const UpdateDataButton = () => {
         description: `We just logged ${body.data.length} new articles for you. You can now see them in the "Articles list" tab.`
       })
 
+      console.log("invalidating cache")
       await queryClient.invalidateQueries({
         queryKey: ["articles"]
       })
     }
-
 
     setLoading(false)
     return

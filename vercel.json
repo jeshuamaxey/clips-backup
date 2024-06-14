@@ -1,7 +1,11 @@
 {
   "crons": [{
     "path": "/api/cron/scrape-articles",
-    "annotation": "every hour on the hour",
-    "schedule": "0 * * * *"
+
+    "x-annotation": "every hour on the hour",
+    "x-schedule": "0 * * * *",
+
+    "annotation": "every minute",
+    "schedule": "* * * * *"
   }]
 }
