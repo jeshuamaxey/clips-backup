@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { User } from "@supabase/supabase-js";
 import { SELECT_ARTICLES } from "@/hooks/useArticles";
 import { scrapeArticlesForUser } from "../lib/scrape-articles-for-user";
+import { addWaybackLinksToArticles } from "../lib/get-wayback-links-for-user";
 
 export async function GET(req: NextRequest) {
   const fnName = 'GET api/scrape-articles-for-user';
@@ -33,7 +34,7 @@ export async function GET(req: NextRequest) {
   }
     
   console.log(`${fnName}: User ${user.id} fetched successfully`)
-  const { data: articlesToInsert, error: scrapeError } = await scrapeArticlesForUser(user);
+  const { data: scrapedArticles, error: scrapeError } = await scrapeArticlesForUser(user);
 
   if(scrapeError) {
     console.error(`${fnName}: Error scraping articles for user ${user.id}`)
@@ -44,8 +45,19 @@ export async function GET(req: NextRequest) {
     }, { status: 500 });
   }
 
+  let articlesToInsert;
+  const {data, error: waybackError } = await addWaybackLinksToArticles(scrapedArticles);
+
+  if(waybackError) {
+    console.error(`${fnName}: Error scraping articles for user ${user.id}`)
+    console.error(waybackError)
+    articlesToInsert = scrapedArticles;
+  } else {
+    articlesToInsert = data;
+  }
+
   const { data: articles, error: insertError } = await supabase.from('articles')
-    .upsert(articlesToInsert!, { onConflict: 'created_by,url_raw', ignoreDuplicates: true })
+    .upsert(articlesToInsert, { onConflict: 'created_by,url_raw', ignoreDuplicates: true })
     .select(SELECT_ARTICLES)
 
   if(insertError) {
@@ -63,8 +75,3 @@ export async function GET(req: NextRequest) {
     data: articles
   }, { status: 200 });
 }
-  
-
-
-
-
