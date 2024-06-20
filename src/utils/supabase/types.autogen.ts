@@ -23,6 +23,7 @@ export type Database = {
           title_raw: string
           updated_at: string
           url_raw: string
+          wayback_machine_url: string | null
         }
         Insert: {
           author_raw: string
@@ -37,6 +38,7 @@ export type Database = {
           title_raw: string
           updated_at?: string
           url_raw: string
+          wayback_machine_url?: string | null
         }
         Update: {
           author_raw?: string
@@ -51,6 +53,7 @@ export type Database = {
           title_raw?: string
           updated_at?: string
           url_raw?: string
+          wayback_machine_url?: string | null
         }
         Relationships: [
           {

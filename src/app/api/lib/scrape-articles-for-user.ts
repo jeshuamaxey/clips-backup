@@ -4,19 +4,22 @@ import { ArticleInsert } from "@/utils/supabase/types";
 import { User } from "@supabase/supabase-js";
 
 type DataPayload = {
-  data: ArticleInsert[] | null,
-  error: { message: string } | null
+  data: ArticleInsert[],
+  error: null
+} | {
+  data: null,
+  error: { message: string }
 }
 
 export async function scrapeArticlesForUser(user: User): Promise<DataPayload>{
   const BI_DOMAIN = 'https://www.businessinsider.com';
   const BI_OUTLET_ID = '1';
+  const fnName = 'lib.scrapeArticlesForUser()';
 
-  console.log(`lib.scrapeArticlesForUser(): Called`)
+  console.log(`${fnName}: Called`)
 
-  console.log(`lib.scrapeArticlesForUser(): Fetching articles for user ${user.id}`)
   if(!user.user_metadata.author_pages || user.user_metadata.author_pages.length === 0) {
-    console.log(`lib.scrapeArticlesForUser(): Aborting. No author page for user ${user.id}`)
+    console.log(`${fnName}: Aborting. No author page for user ${user.id}`)
     return {
       data: null,
       error: { message: `No author page for user ${user.id}` }
@@ -24,15 +27,15 @@ export async function scrapeArticlesForUser(user: User): Promise<DataPayload>{
   }
     
   const author_page = user.user_metadata.author_pages[0];
-  console.log(`lib.scrapeArticlesForUser(): Accessing ${author_page}`)
+  console.log(`${fnName}: Accessing ${author_page}`)
 
   let response;
 
   try {
     response = await fetch(author_page);
-    console.log(`lib.scrapeArticlesForUser(): Successfully fetched ${author_page}`)
+    console.log(`${fnName}: Successfully fetched ${author_page}`)
   } catch (error) {
-    console.error(`lib.scrapeArticlesForUser(): Error fetching ${author_page}`)
+    console.error(`${fnName}: Error fetching ${author_page}`)
     console.error(error)
     return {
       data: null,
@@ -48,7 +51,7 @@ export async function scrapeArticlesForUser(user: User): Promise<DataPayload>{
   const htmlArticles = dom(BI.articleDOMSelector)
   const author_raw =  dom(BI.authorDOMSelector).text();
 
-  console.log(`lib.scrapeArticlesForUser(): ${htmlArticles.length} articles found`)
+  console.log(`${fnName}: ${htmlArticles.length} articles found`)
 
   const articlesToInsert: ArticleInsert[] = htmlArticles.map((i, el) => {
     const article = dom(el);

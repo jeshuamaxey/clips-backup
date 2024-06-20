@@ -6,7 +6,9 @@ import { SELECT_ARTICLES } from "@/hooks/useArticles";
 import { scrapeArticlesForUser } from "../lib/scrape-articles-for-user";
 
 export async function GET(req: NextRequest) {
-  console.log(`api/scrape-articles-for-user: Called`)
+  const fnName = 'GET api/scrape-articles-for-user';
+
+  console.log(`${fnName}: Called`)
 
   const supabase = createClient(true);
   let user: User;
@@ -16,7 +18,7 @@ export async function GET(req: NextRequest) {
     const token = jwtDecode(bearerToken);
     const userId = token.sub || "NO_ID_FROM_TOKEN";
 
-    console.log(`api/scrape-articles-for-user: Fetching user ${userId}`)
+    console.log(`${fnName}: Fetching user ${userId}`)
 
     
     const { data, error } = await supabase.auth.admin.getUserById(userId);
@@ -25,16 +27,16 @@ export async function GET(req: NextRequest) {
     
     user = data.user;
   } catch(error: any) {
-    console.log(`api/scrape-articles-for-user: Could not get user`)
+    console.log(`${fnName}: Could not get user`)
     console.error(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
     
-  console.log(`api/scrape-articles-for-user: User ${user.id} fetched successfully`)
+  console.log(`${fnName}: User ${user.id} fetched successfully`)
   const { data: articlesToInsert, error: scrapeError } = await scrapeArticlesForUser(user);
 
   if(scrapeError) {
-    console.error(`api.scrapeArticlesForUser(): Error scraping articles for user ${user.id}`)
+    console.error(`${fnName}: Error scraping articles for user ${user.id}`)
     console.error(scrapeError)
     
     return NextResponse.json({
@@ -47,7 +49,7 @@ export async function GET(req: NextRequest) {
     .select(SELECT_ARTICLES)
 
   if(insertError) {
-    console.error(`lib.scrapeArticlesForUser(): Error inserting articles for user ${user.id}`)
+    console.error(`${fnName}: Error inserting articles for user ${user.id}`)
     console.error(insertError)
     
     return NextResponse.json({
@@ -55,7 +57,7 @@ export async function GET(req: NextRequest) {
     }, { status: 500 });
   }
 
-  console.log(`lib.scrapeArticlesForUser(): Successfully inserted ${articles.length} articles for user ${user.id}`)
+  console.log(`${fnName}: Successfully inserted ${articles.length} articles for user ${user.id}`)
 
   return NextResponse.json({
     data: articles
