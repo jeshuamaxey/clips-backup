@@ -5,8 +5,11 @@
     "x-annotation": "every hour on the hour",
     "x-schedule": "0 * * * *",
 
-    "annotation": "every minute",
-    "schedule": "* * * * *"
+    "xx-annotation": "every minute",
+    "xx-schedule": "* * * * *",
+
+    "annotation": "every day at 5pm",
+    "schedule": "0 17 * * *"
   }, {
     "path": "/api/cron/emails/weekly-roundup",
 
