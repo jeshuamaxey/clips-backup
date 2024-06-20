@@ -14,6 +14,7 @@ npm run dev
   - [x] check author page daily
   - [x] send me an email report after scraping job
   - [x] check for wayback machine link
+  - [ ] something else
 - [ ] txn emails
   - [ ] weekly round up
 - [ ] outlets
