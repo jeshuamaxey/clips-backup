@@ -21,7 +21,7 @@ export async function addWaybackLinksToArticles(articles: ArticleInsert[]): Prom
 
     if(json.archived_snapshots.closest) {
       console.log(`${fnName}: Found wayback machine link for ${article.url_raw}`)
-      const wayback_machine_url = json.archived_snapshots.closest
+      const wayback_machine_url = json.archived_snapshots.closest.url
       return { ...article, wayback_machine_url };
     }
     console.log(`${fnName}: No wayback machine link found for ${article.url_raw}`)
