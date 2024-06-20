@@ -1,7 +1,7 @@
 {
   "crons": [{
     "path": "/api/cron/scrape-articles",
-    "schedule": "0 17 * * *"
+    "schedule": "15 17 * * *"
   }, {
     "path": "/api/cron/emails/weekly-roundup",
     "schedule": "0 8 * * 1"
