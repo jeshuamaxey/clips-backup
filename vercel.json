@@ -1,12 +1,9 @@
 {
   "crons": [{
     "path": "/api/cron/scrape-articles",
-    "annotation": "every day at 5pm",
     "schedule": "0 17 * * *"
   }, {
     "path": "/api/cron/emails/weekly-roundup",
-
-    "annotation": "8am every monday",
     "schedule": "0 8 * * 1"
   }]
 }
