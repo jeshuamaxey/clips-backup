@@ -86,19 +86,17 @@ const PivotTable = ({}: PivotTableProps) => {
       {Object.keys(monthYearRows).sort(monthOrder).map((monthYear, i) => {
         const month = monthYear.slice(0, 3)
 
-        return <>
-          <TableRow key={monthYear}>
-            <TableCell>{monthYear}</TableCell>
-            {years.map((year) => {
-              const isFuture = new Date(Number(year), MONTHS.indexOf(month)).getTime() > new Date().getTime()
+        return <TableRow key={monthYear}>
+          <TableCell>{monthYear}</TableCell>
+          {years.map((year) => {
+            const isFuture = new Date(Number(year), MONTHS.indexOf(month)).getTime() > new Date().getTime()
 
-              return <TableHead className="text-right" key={year}>
-                {isFuture ? "" : monthYearRows[month][year] || 0}
-              </TableHead>
-              }
-            )}
-          </TableRow>
-        </>
+            return <TableHead className="text-right" key={year}>
+              {isFuture ? "" : monthYearRows[month][year] || 0}
+            </TableHead>
+            }
+          )}
+        </TableRow>
         }
       )}
     </TableBody>
