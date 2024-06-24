@@ -90,7 +90,9 @@ const sendWeeklyRoundupEmail = async (user: User): Promise<{data: any, error: an
     lastMonthsArticles: lastMonthsArticles?.length
   })
 
-  const subject = `Story Safe roundup: ${thisWeekStart.getDate()} ${thisWeekStart.toLocaleString('default', { month: 'long' })} - ${thisWeekEnd.getDate()} ${thisWeekEnd.toLocaleString('default', { month: 'long' })}`
+  const startDate = `${thisWeekStart.getDate()} ${thisWeekStart.toLocaleString('default', { month: 'long' })}`
+  const endDate = `${thisWeekEnd.getDate()} ${thisWeekEnd.toLocaleString('default', { month: 'long' })}`
+  const subject = `Story Safe roundup: ${startDate} - ${endDate}`
 
   try {
     const { data, error } = await resend.emails.send({
