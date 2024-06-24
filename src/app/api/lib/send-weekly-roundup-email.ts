@@ -2,7 +2,7 @@ import { EmailTemplate } from "@/email-templates/weekly-roundup";
 import { SELECT_ARTICLES } from "@/hooks/useArticles";
 import { createClient } from "@/utils/supabase/server";
 import { User } from "@supabase/supabase-js";
-import { previousMonday, previousSunday, startOfDay, endOfDay, endOfMonth, startOfMonth, previousDay, startOfYesterday, subMonths } from "date-fns";
+import { previousMonday, previousSunday, startOfDay, endOfDay, endOfMonth, startOfMonth, sub } from "date-fns";
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -22,19 +22,20 @@ const sendWeeklyRoundupEmail = async (user: User): Promise<{data: any, error: an
   const now = new Date()
   const thisWeekEnd = endOfDay(previousSunday(now))
   const thisWeekStart = startOfDay(previousMonday(thisWeekEnd))
-  const previousWeekCommence = endOfDay(previousSunday(thisWeekStart))
+  const previousWeekStart = sub(thisWeekStart, {weeks: 1})
 
   const thisMonthEnd = endOfMonth(now)
   const thisMonthStart = startOfMonth(now)
-  const previousMonthCommence = subMonths(thisMonthStart, 1)
+  const previousMonthStart = sub(thisMonthStart, {months: 1})
 
-  console.log({
-    weekCommence: thisWeekStart.toISOString(),
-    weekEnd: thisWeekEnd.toISOString(),
-    thisMonthEnd: thisMonthEnd.toISOString(),
-    thisMonthStart: thisMonthStart.toISOString(),
-    previousMonthCommence: previousMonthCommence.toISOString(),
-  })
+  // console.log({
+  //   weekEnd: thisWeekEnd.toISOString(),
+  //   weekStart: thisWeekStart.toISOString(),
+  //   previousWeekStart: previousWeekStart.toISOString(),
+  //   thisMonthEnd: thisMonthEnd.toISOString(),
+  //   thisMonthStart: thisMonthStart.toISOString(),
+  //   previousMonthStart: previousMonthStart.toISOString(),
+  // })
 
   const { data: lastWeeksArticles, error } = await supabase.from("articles")
     .select(SELECT_ARTICLES)
@@ -45,7 +46,7 @@ const sendWeeklyRoundupEmail = async (user: User): Promise<{data: any, error: an
   const { data: prevWeekArticles, error: lastWeekError } = await supabase.from("articles")
     .select("id")
     .eq("created_by", user.id)
-    .gt("published_at", previousWeekCommence.toISOString())
+    .gt("published_at", previousWeekStart.toISOString())
     .lte("published_at", thisWeekStart.toISOString())
 
   const { data: thisMonthsArticles, error: thisMonthError } = await supabase.from("articles")
@@ -57,7 +58,7 @@ const sendWeeklyRoundupEmail = async (user: User): Promise<{data: any, error: an
   const { data: lastMonthsArticles, error: lastMonthError } = await supabase.from("articles")
     .select("id")
     .eq("created_by", user.id)
-    .gt("published_at", previousMonthCommence.toISOString())
+    .gt("published_at", previousMonthStart.toISOString())
     .lte("published_at", thisMonthStart.toISOString())
 
   const allErrors = [{
@@ -82,12 +83,12 @@ const sendWeeklyRoundupEmail = async (user: User): Promise<{data: any, error: an
     }
   })
 
-  // console.log({
-  //   lastWeeksArticles,
-  //   prevWeekArticles,
-  //   thisMonthsArticles,
-  //   lastMonthsArticles
-  // })
+  console.log({
+    lastWeeksArticles: lastWeeksArticles?.length,
+    prevWeekArticles: prevWeekArticles?.length,
+    thisMonthsArticles: thisMonthsArticles?.length,
+    lastMonthsArticles: lastMonthsArticles?.length
+  })
 
   const subject = `Story Safe roundup: ${thisWeekStart.getDate()} ${thisWeekStart.toLocaleString('default', { month: 'long' })} - ${thisWeekEnd.getDate()} ${thisWeekEnd.toLocaleString('default', { month: 'long' })}`
 
